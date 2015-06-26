@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CNV Analyzer &mdash; Copy Number analysis in gene regions</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Copy Number analysis in gene regions" href="#" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="#">
+          <span>Copy Number analysis in gene regions</span></a></h1>
+        <h2 class="heading"><span>CNV Analyzer</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="cnv-analyzer">
+<h1>CNV Analyzer<a class="headerlink" href="#cnv-analyzer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-script-to-cross-copy-number-window-values-versus-gene-bed-coordinates">
+<h2>Python script to cross copy number window values versus gene bed coordinates<a class="headerlink" href="#python-script-to-cross-copy-number-window-values-versus-gene-bed-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>CNV Analyzer uses <a class="reference external" href="http://bedtools.readthedocs.org/en/latest/content/tools/map.html">bedtools map</a> to extract copy number values from gene coordinates. <a class="reference external" href="http://bedtools.readthedocs.org/en/latest/content/tools/map.html">bedtools map</a> calculates the mean copy number value for those copy number windows overlapping gene
+regions.</p>
+<div class="section" id="statistics-per-gene-and-sample">
+<h3>Statistics per gene and sample<a class="headerlink" href="#statistics-per-gene-and-sample" title="Permalink to this headline">¶</a></h3>
+<p>Calculates gene copy number per each sample. Classifies each gene as copy number 0, 1, 2 and 3 or grater. Copy number values are estimated as float values, then a round is applied to
+classify it.</p>
+</div>
+<div class="section" id="statistics-per-population">
+<h3>Statistics per Population<a class="headerlink" href="#statistics-per-population" title="Permalink to this headline">¶</a></h3>
+<p>Calculates mean gene copy number from all gene copy number samples and gets its standard deviation.</p>
+</div>
+<div class="section" id="statistics-per-sample">
+<h3>Statistics per sample<a class="headerlink" href="#statistics-per-sample" title="Permalink to this headline">¶</a></h3>
+<p>Calculates copy number on all genes of a given sample and its standard deviation.</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>cnv_analyzer --cn-list copy_number/*.bed --genes ensemble_genes.bed --dir-out directory_output</pre>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">&#8211;cn-list Files included in the file copy number list must represent a copy number file per sample. This copy number file must have four fields, chromosome start end copyNumberValue.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">&#8211;genes parameter must be an annotation file in BED format.</p>
+</div>
+</div>
+</div>
+<div class="section" id="output-files">
+<h2>Output files<a class="headerlink" href="#output-files" title="Permalink to this headline">¶</a></h2>
+<p>Files generated:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sample.genes.bed</td>
+<td>Per each sample copy number file. Outputs gene coordinates
+and its copy number value.</td>
+</tr>
+<tr class="row-odd"><td>sample.genes.bed.cn0</td>
+<td>Per each sample copy number file. Outputs gene coordinates
+and its copy number values and standard deviation for genes
+considered as copy number 0.</td>
+</tr>
+<tr class="row-even"><td>sample.genes.bed.cn1</td>
+<td>Per each sample copy number file. Outputs gene coordinates
+and its copy number values and standard deviation for genes
+considered as copy number 1.</td>
+</tr>
+<tr class="row-odd"><td>sample.genes.bed.cn2</td>
+<td>Per each sample copy number file. Outputs gene coordinates
+and its copy number values and standard deviation for genes
+considered as copy number 2.</td>
+</tr>
+<tr class="row-even"><td>sample.genes.bed.cn3</td>
+<td>Per each sample copy number file. Outputs gene coordinates
+and its copy number values and standard deviation for genes
+considered as copy number 3 or more.</td>
+</tr>
+<tr class="row-odd"><td>geneDatabase.cn0.population.variability.bed</td>
+<td>Copy number and Standard Deviation for all genes per population.
+The copy number is the median value from all samples.
+Genes considered as copy number 0.</td>
+</tr>
+<tr class="row-even"><td>geneDatabase.cn1.population.variability.bed</td>
+<td>Copy number and Standard Deviation for all genes per population.
+The copy number is the median value from all samples.
+Genes considered as copy number 1.</td>
+</tr>
+<tr class="row-odd"><td>geneDatabase.cn2.population.variability.bed</td>
+<td>Copy number and Standard Deviation for all genes per population.
+The copy number is the median value from all samples.
+Genes considered as copy number 2.</td>
+</tr>
+<tr class="row-even"><td>geneDatabase.cn3.population.variability.bed</td>
+<td>Copy number and Standard Deviation for all genes per population.
+The copy number is the median value from all samples.
+Genes considered as copy number 3 or more.</td>
+</tr>
+<tr class="row-odd"><td>geneDatabase.samples.variability.bed</td>
+<td>For all samples, median copy number value and standard deviation
+in gene regions.</td>
+</tr>
+<tr class="row-even"><td>geneDatabase.stats.json</td>
+<td><p class="first">JSON file of statistics per each sample and population.</p>
+<p>Number of genes copy number 0.</p>
+<p>Number of genes copy number 1.</p>
+<p>Number of genes copy number 2.</p>
+<p>Number of genes copy number 3 or more.</p>
+<p>Median Copy Number value in genes.</p>
+<p class="last">Standard Deviation value in genes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<p>cnv_analyzer script uses Bedtools to perform some of the calculations. You must Install the package in your system to run
+cnv_analyzer script.</p>
+<p>Get last version from: <a class="reference external" href="http://bedtools.readthedocs.org/en/latest/">http://bedtools.readthedocs.org/en/latest/</a></p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, Marcos Fernandez-Callejo.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
